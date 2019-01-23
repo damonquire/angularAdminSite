@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-admin',
   template: `
     <p>
-      admin works!
+      Admin Works!
     </p>
   `,
   styles: []

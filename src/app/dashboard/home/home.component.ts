@@ -12,5 +12,17 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this._authService.checkIfCodeExists();
   }
+  GetUser()
+  {
+    this._authService.GetUser();
+  }
+  GetItem()
+  {
+    this._authService.GetItem();
+  }
+  GetApp()
+  {
+    this._authService.GetApp();
+  }
 
 }
