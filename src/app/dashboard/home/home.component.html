@@ -1,8 +1,18 @@
 <p id="test">
   Home Works!
   </p>
+  
+  
+  
+  
   <p id="form" style="display:none">
-  <button (click)="GetUser()">Get User</button>
+  <b><span style="font-size: 20px">Make Podio Calls Here:</span></b><br><br>
+    <button (click)="GetUser()">Get User</button>
+   
+  <br>
+  <br>
+  <button (click)="GetApps()">Get All Apps</button>
+  
   <br>
   <br>
     <input id="itemIdBox" type="text"placeholder="Item ID...">
@@ -12,4 +22,7 @@
   <br>
     <input id="appIdBox" type="text"placeholder="App ID...">
   <button (click)="GetApp()">Get App</button>
+
+
 </p>
+<pre id="results"></pre>

@@ -75,7 +75,7 @@ export class AuthService {
     {
       //set as admin user
       sessionStorage.setItem('token', `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1MzMyNzM5NjksImV4cCI6MTU2NDgxMDAwNSwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoiVGVzdCBHdWFyZCIsIkdpdmVuTmFtZSI6IkpvaG5ueSIsIlN1cm5hbWUiOiJSb2NrZXQiLCJFbWFpbCI6Impyb2NrZXRAZXhhbXBsZS5jb20iLCJyb2xlIjoiQWRtaW4ifQ.rEkg53_IeCLzGHlmaHTEO8KF5BNfl6NEJ8w-VEq2PkE`);
-      document.getElementById("test").innerHTML = 
+      /*document.getElementById("test").innerHTML = 
       "<style>th, td {padding: 15px;text-align: left;}table#t01 {width: 100%;background-color: #f1f1c1;}</style>"
       +
       "<table>"+
@@ -86,12 +86,13 @@ export class AuthService {
       "<tr><td><b>Refresh Token: </b></td>"+"<td>"+refreshToken+"</td></tr>"+
       "<tr><td><b>Scope: </b></td>"+"<td>"+scope+"</td></tr>"+
       "<tr><td><b>State: </b></td>"+"<td>"+state+"</td></tr>"+
-      "<tr><td><b>Token Type: </b></td>"+"<td>"+tokenType+"</td></tr>";
+      "<tr><td><b>Token Type: </b></td>"+"<td>"+tokenType+"</td></tr>";*/
+      document.getElementById("test").style.display="none";
       document.getElementById("form").style.display="block";
     } 
     
   }
-  CallPodioApi(urlString:string)
+  CallPodioApi(urlString:string, titleString:string)
   {
     const urlHash=window.location.hash.substring(1);
     var split=urlHash.split('&');
@@ -106,22 +107,28 @@ export class AuthService {
 
     Http.onreadystatechange=(e)=>
     {
-      console.log(Http.responseText)
+      console.log(Http.responseText);
+      var obj=JSON.parse(Http.responseText);
+      document.getElementById("results").innerHTML="<span style=\"font-size: 20px\">"+titleString+"</span><b></b><br>"+JSON.stringify(obj, undefined, 2);
     }
   }
   GetUser()
   { 
-    this.CallPodioApi("https://api.podio.com/user");
+    this.CallPodioApi("https://api.podio.com/user","User info:");
   }
   GetItem()
   {
     var inputValue = (<HTMLInputElement>document.getElementById("itemIdBox")).value;
-    this.CallPodioApi("https://api.podio.com/item/"+inputValue);
+    this.CallPodioApi("https://api.podio.com/item/"+inputValue,"Item info for Item with ID "+inputValue+":");
   }
   GetApp()
   {
     var inputValue = (<HTMLInputElement>document.getElementById("appIdBox")).value;
-    this.CallPodioApi("https://api.podio.com/app/"+inputValue);
+    this.CallPodioApi("https://api.podio.com/app/"+inputValue,"App info for App with ID "+inputValue+":");
+  }
+  GetApps()
+  {
+    this.CallPodioApi("https://api.podio.com/app","All App(s) information:");
   }
 
   }
