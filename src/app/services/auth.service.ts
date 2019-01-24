@@ -37,9 +37,9 @@ export class AuthService {
 
   loginAdmin(): void {
     //this._router.navigateByUrl('../podio.com/oauth/authorize?client_id=angular-test&redirect_uri=http://localhost:4200');
-    window.location.href = 'https://www.podio.com/oauth/authorize?response_type=token&client_id=angular&redirect_uri=http://localhost:4200/dashboard&state=DamonIsTheAngularMaster';
+    window.location.href = 'https://www.podio.com/oauth/authorize?response_type=token&client_id=angular&redirect_uri=http://localhost:4200/dashboard/admin&state=DamonIsTheAngularMaster';
     //set as regular user regardless
-    sessionStorage.setItem('token', `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1MzMyNzM5NjksImV4cCI6MTU2NDgxMDAwNSwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoiVGVzdCBHdWFyZCIsIkdpdmVuTmFtZSI6IkpvaG5ueSIsIlN1cm5hbWUiOiJSb2NrZXQiLCJFbWFpbCI6Impyb2NrZXRAZXhhbXBsZS5jb20ifQ.GA0Y9gYIjmx1jLwuRHuBgZ8m6o-NgkD84nO0ym68CWo`);
+    sessionStorage.setItem('token', `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1MzMyNzM5NjksImV4cCI6MTU2NDgxMDAwNSwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoiVGVzdCBHdWFyZCIsIkdpdmVuTmFtZSI6IkpvaG5ueSIsIlN1cm5hbWUiOiJSb2NrZXQiLCJFbWFpbCI6Impyb2NrZXRAZXhhbXBsZS5jb20iLCJyb2xlIjoiQWRtaW4ifQ.rEkg53_IeCLzGHlmaHTEO8KF5BNfl6NEJ8w-VEq2PkE`);
   
   }
 
@@ -64,13 +64,7 @@ export class AuthService {
     const urlHash=window.location.hash.substring(1);
     var split=urlHash.split('&');
     var accessToken=split[0].substring(split[0].indexOf('=')+1);
-    var expiresIn=split[1].substring(split[1].indexOf('=')+1);
-    var refID=split[2].substring(split[2].indexOf('=')+1);
-    var refType=split[3].substring(split[3].indexOf('=')+1);
-    var refreshToken=split[4].substring(split[4].indexOf('=')+1);
-    var scope=split[5].substring(split[5].indexOf('=')+1);
-    var state=split[6].substring(split[6].indexOf('=')+1);
-    var tokenType=split[7].substring(split[7].indexOf('=')+1);
+
     if(accessToken!=null)
     {
       //set as admin user
@@ -87,11 +81,100 @@ export class AuthService {
       "<tr><td><b>Scope: </b></td>"+"<td>"+scope+"</td></tr>"+
       "<tr><td><b>State: </b></td>"+"<td>"+state+"</td></tr>"+
       "<tr><td><b>Token Type: </b></td>"+"<td>"+tokenType+"</td></tr>";*/
-      document.getElementById("test").style.display="none";
-      document.getElementById("form").style.display="block";
-    } 
+      //document.getElementById("test").style.display="none";
+      //document.getElementById("form").style.display="block";
+      const urlHash=window.location.hash.substring(1);
+      var split=urlHash.split('&');
+      var accessToken=split[0].substring(split[0].indexOf('=')+1);
+      var Http = new XMLHttpRequest();
+      const url="https://api.podio.com/user";
+      Http.open("GET", url);
+      Http.setRequestHeader("Authorization", "OAuth2 "+accessToken);
+      Http.send();
+      Http.onreadystatechange=(e)=>
+      {
+        var json=JSON.parse(Http.response);
+        console.log(Http.response);
+        document.getElementById("userName").innerHTML="<b>"+json.mail+"</b>";
+      }
+      
+    var Http2 = new XMLHttpRequest();
+    Http2.open("GET", "https://api.podio.com/org");
+    Http2.setRequestHeader("Authorization", "OAuth2 "+accessToken);
+    Http2.send();
+    var orgs;
+    var text:String;
     
+    Http2.onreadystatechange=(e)=>
+    {
+      orgs=JSON.parse(Http2.responseText);
+      console.log("ORGS: "+Http2.responseText);
+      var options = orgs;
+
+
+      // Get dropdown element from DOM
+      var select = document.getElementById("selectNumber");
+      
+      // Loop through the array
+      for(var i = 0; i < options.length; i++) 
+      {
+        
+        var opt = options[i];
+        if(!select.innerHTML.includes(opt.name))
+        select.innerHTML += "<option value=\"" + opt.name + "\">" + opt.name + "</option>";
+      
+      } 
+    
+    }
   }
+}
+GetWorkspaces()
+{
+  var select2 = document.getElementById("selectW");
+  select2.innerHTML=" ";
+  const urlHash=window.location.hash.substring(1);
+  var split=urlHash.split('&');
+  var accessToken=split[0].substring(split[0].indexOf('=')+1);
+  document.getElementById("workspaces").style.display="block";
+  var select =  (<HTMLInputElement>document.getElementById("selectNumber")).value;
+  console.log(select);
+  var Http2 = new XMLHttpRequest();
+    Http2.open("GET", "https://api.podio.com/org");
+    Http2.setRequestHeader("Authorization", "OAuth2 "+accessToken);
+    Http2.send();
+    var orgs;
+    var text:String;
+    
+    Http2.onreadystatechange=(e)=>
+    {
+      orgs=JSON.parse(Http2.responseText);
+      var options = orgs;
+      
+      
+      // Loop through the array
+      for(var i = 0; i < options.length; i++) 
+      {
+        
+        var opt = options[i];
+        console.log("Checking to see if option="+select);
+        if(opt.name==select)
+        {
+          for (var i =0;i<opt.spaces.length;i++)
+          { 
+            var ws=opt.spaces[i];
+            if(!select2.innerHTML.includes(ws.name.trim()))
+            {
+            select2.innerHTML += "<option value=\"" + ws.name + "\">" + ws.name + "</option>";
+            }
+          }
+        }
+        
+      
+      } 
+    
+    }
+}
+
   CallPodioApi(urlString:string, titleString:string)
   {
     const urlHash=window.location.hash.substring(1);
@@ -101,16 +184,15 @@ export class AuthService {
     const url=urlString;
     Http.open("GET", url);
     Http.setRequestHeader("Authorization", "OAuth2 "+accessToken);
-    console.log(Http);
     Http.send();
-    
-
+    var orgs;
+    var text;
     Http.onreadystatechange=(e)=>
     {
-      console.log(Http.responseText);
-      var obj=JSON.parse(Http.responseText);
-      document.getElementById("results").innerHTML="<span style=\"font-size: 20px\">"+titleString+"</span><b></b><br>"+JSON.stringify(obj, undefined, 2);
+      orgs=JSON.parse(Http.responseText);
+      document.getElementById("results").innerHTML="<span style=\"font-size: 20px\">"+titleString+"</span><b></b><br>"+JSON.stringify(orgs, undefined, 2);
     }
+    
   }
   GetUser()
   { 
@@ -130,5 +212,31 @@ export class AuthService {
   {
     this.CallPodioApi("https://api.podio.com/app","All App(s) information:");
   }
-
+  GetOrganizations()
+  {
+    const urlHash=window.location.hash.substring(1);
+    var split=urlHash.split('&');
+    var accessToken=split[0].substring(split[0].indexOf('=')+1);
+    const Http = new XMLHttpRequest();
+    Http.open("GET", "https://api.podio.com/org");
+    Http.setRequestHeader("Authorization", "OAuth2 "+accessToken);
+    Http.send();
+    var orgs;
+    var text:String;
+    Http.onreadystatechange=(e)=>
+    {
+      orgs=JSON.parse(Http.responseText);
+      console.log("ORGS: "+Http.responseText);
+      for (var i in orgs)
+      {
+        console.log(orgs[i].name);
+        if(orgs[i].name!=""&&orgs[i].name!=null)    
+        {
+          text+=orgs[i].name+" ";
+        }
+      } 
+    var textfinal=text.replace("undefined","");
+    document.getElementById("results").innerHTML=textfinal;
+    }
   }
+}

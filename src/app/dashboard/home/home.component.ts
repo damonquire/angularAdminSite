@@ -28,5 +28,9 @@ export class HomeComponent implements OnInit {
   {
     this._authService.GetApps();
   }
+  GetOrganizations()
+  {
+    this._authService.GetOrganizations();
+  }
 
 }
