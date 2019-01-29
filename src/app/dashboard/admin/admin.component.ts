@@ -37,5 +37,9 @@ export class AdminComponent implements OnInit {
   {
     this._authService.GetWorkspaces();
   }
+  SaveSolution()
+  {
+    this._authService.SaveSolution();
+  }
 
 }

@@ -5,6 +5,7 @@ import {map, tap} from 'rxjs/operators';
 import decode from 'jwt-decode';
 import { forEach } from '@angular/router/src/utils/collection';
 import { AppModule } from '../app.module';
+import { stringify } from '@angular/core/src/render3/util';
 
 @Injectable({
   providedIn: 'root'
@@ -94,7 +95,6 @@ export class AuthService {
       Http.onreadystatechange=(e)=>
       {
         var json=JSON.parse(Http.response);
-        console.log(Http.response);
         document.getElementById("userName").innerHTML="<b>"+json.mail+"</b>";
       }
       
@@ -104,11 +104,10 @@ export class AuthService {
     Http2.send();
     var orgs;
     var text:String;
-    
+    var admin:boolean=false;
     Http2.onreadystatechange=(e)=>
     {
       orgs=JSON.parse(Http2.responseText);
-      console.log("ORGS: "+Http2.responseText);
       var options = orgs;
 
 
@@ -116,13 +115,30 @@ export class AuthService {
       var select = document.getElementById("selectNumber");
       
       // Loop through the array
+      
       for(var i = 0; i < options.length; i++) 
       {
         
         var opt = options[i];
         if(!select.innerHTML.includes(opt.name))
-        select.innerHTML += "<option value=\"" + opt.name + "\">" + opt.name + "</option>";
-      
+        {
+          //check to see if admin... if so... allow sellection
+          if(opt.role.includes("regular"))
+          {
+            select.innerHTML += "<option value=\"" + opt.name + "\">" + opt.name + "</option>";
+            document.getElementById("notAdminButton").style.display="inline";
+            admin=true;
+          }
+          else
+          {
+            select.innerHTML += "<option disabled value=\"" + opt.name + "\">" + opt.name + "</option>";
+          }
+        }
+      }
+      console.log("Admin="+admin);
+      if(!admin)
+      {
+          document.getElementById("admin").innerHTML="We're sorry. It seems you are not an admin of any Podio organization. Please make sure you are logged into the correct Podio account!";
       } 
     
     }
@@ -152,16 +168,16 @@ GetWorkspaces()
       
       
       // Loop through the array
-      for(var i = 0; i < options.length; i++) 
+      for(var i in options) 
       {
-        
         var opt = options[i];
         console.log("Checking to see if option="+select);
         if(opt.name==select)
         {
-          for (var i =0;i<opt.spaces.length;i++)
+          for (var i in opt.spaces)
           { 
             var ws=opt.spaces[i];
+            console.log("Checking to see if "+select2.innerHTML+" includes "+ws.name.trim())
             if(!select2.innerHTML.includes(ws.name.trim()))
             {
             select2.innerHTML += "<option value=\"" + ws.name + "\">" + ws.name + "</option>";
@@ -226,7 +242,6 @@ GetWorkspaces()
     Http.onreadystatechange=(e)=>
     {
       orgs=JSON.parse(Http.responseText);
-      console.log("ORGS: "+Http.responseText);
       for (var i in orgs)
       {
         console.log(orgs[i].name);
@@ -238,5 +253,75 @@ GetWorkspaces()
     var textfinal=text.replace("undefined","");
     document.getElementById("results").innerHTML=textfinal;
     }
+  }
+  SaveSolution()
+  {
+    var solutionName=(<HTMLInputElement>document.getElementById("solutionName")).value;
+    //is only grabbing one selection its seems... need work around
+    var selectedWorkspaces=(<HTMLSelectElement>document.getElementById("selectW")).selectedOptions;
+    var wsText:string="";
+    for(var i in selectedWorkspaces)
+    {
+      if(selectedWorkspaces[i].innerHTML!=""&&selectedWorkspaces[i].innerHTML!=null)   
+      wsText+=selectedWorkspaces[i].innerHTML.replace("&amp;","&")+",";
+    }
+    console.log("LOOK HERE: "+wsText);
+    var select2 = document.getElementById("selectW");
+    var solutionText:string;
+    solutionText="";
+    const urlHash=window.location.hash.substring(1);
+    var split=urlHash.split('&');
+    var accessToken=split[0].substring(split[0].indexOf('=')+1);
+    document.getElementById("workspaces").style.display="block";
+    var select =  (<HTMLInputElement>document.getElementById("selectNumber")).value;
+    console.log(select);
+    var Http2 = new XMLHttpRequest();
+      Http2.open("GET", "https://api.podio.com/org");
+      Http2.setRequestHeader("Authorization", "OAuth2 "+accessToken);
+      Http2.send();
+      var orgs;
+      var text:String;
+      
+      Http2.onreadystatechange=(e)=>
+      {
+        orgs=JSON.parse(Http2.responseText);
+        var options = orgs;
+        
+        
+        // Loop through the array
+        for(var i in options) 
+        {
+          var opt = options[i];
+          console.log("Checking to see if option="+select);
+          if(opt.name==select)
+          {
+            for (var i in opt.spaces)
+            { 
+              var ws=opt.spaces[i];
+              var text:string;
+              text=ws.name;
+              if(wsText.includes(text)&&!solutionText.includes(JSON.stringify(ws)))
+              {
+                solutionText+=JSON.stringify(ws);
+              
+              }
+            }
+          }
+          
+        
+        } 
+        console.log("Found it:"+JSON.stringify(ws));
+        var solutionDict=[];
+        solutionDict.push(
+        {
+        key:solutionName,
+        value:solutionText
+        }        
+      )
+      
+      console.log(JSON.stringify(solutionDict));
+      }
+    
+    
   }
 }

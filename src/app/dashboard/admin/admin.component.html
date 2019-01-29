@@ -3,19 +3,26 @@ Thanks <span id="userName"> </span> for being a Saasafras and Podio User!
 It seems this is your first time here. Let's create a Solution!
 <br>
 <br>
-First select which Organization your solution will come from:
+<body id="admin">
+First, let's give this solution a name:
+<input id="solutionName" type="text">
+<br><br>
+Next, select which Organization your solution will come from:
         
 <select id="selectNumber">
           <option>Choose an Organization</option>
         </select>
-        <button (click)="GetWorkspaces()">Submit</button>
+        <button id="notAdminButton"style="display:none" (click)="GetWorkspaces()">Submit</button>
         <br><br>
         <p id="workspaces" style="display: none">
         Now select the workspaces you'd like to include (ctrl+click to select multiple)!
         <br>
         <select id="selectW" name="workspaces" multiple>
               </select>
+              <br>
+              <button (click)="SaveSolution()">Save Solution</button>
             </p>
+          </body>
         <!--
       
         <p id="form" style="display:none">
