@@ -38,7 +38,7 @@ export class AuthService {
 
   loginAdmin(): void {
     //this._router.navigateByUrl('../podio.com/oauth/authorize?client_id=angular-test&redirect_uri=http://localhost:4200');
-    window.location.href = 'https://www.podio.com/oauth/authorize?response_type=token&client_id=angular&redirect_uri=http://localhost:4200/dashboard/admin&state=DamonIsTheAngularMaster';
+    window.location.href = 'https://www.podio.com/oauth/authorize?response_type=token&client_id=angular&redirect_uri=https://owaikpgv.github.stackblitz.io/dashboard/admin&state=Success';
     //set as regular user regardless
     sessionStorage.setItem('token', `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1MzMyNzM5NjksImV4cCI6MTU2NDgxMDAwNSwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoiVGVzdCBHdWFyZCIsIkdpdmVuTmFtZSI6IkpvaG5ueSIsIlN1cm5hbWUiOiJSb2NrZXQiLCJFbWFpbCI6Impyb2NrZXRAZXhhbXBsZS5jb20iLCJyb2xlIjoiQWRtaW4ifQ.rEkg53_IeCLzGHlmaHTEO8KF5BNfl6NEJ8w-VEq2PkE`);
   
@@ -123,7 +123,7 @@ export class AuthService {
         if(!select.innerHTML.includes(opt.name))
         {
           //check to see if admin... if so... allow sellection
-          if(opt.role.includes("regular"))
+          if(opt.role.includes("regular"))//change to admin when not running locally
           {
             select.innerHTML += "<option value=\"" + opt.name + "\">" + opt.name + "</option>";
             document.getElementById("notAdminButton").style.display="inline";
