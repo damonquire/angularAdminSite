@@ -4,6 +4,7 @@ import { HomeComponent } from './home/home.component';
 import { AdminComponent } from './admin/admin.component';
 import { AuthGuard } from '../guards/auth-guard.service';
 import { RoleGuard } from '../guards/role-guard.service';
+import { SolutionsComponent } from '../solutions/solutions.component';
 
 export const dashboardRoutes: Routes = [
   {
@@ -15,6 +16,11 @@ export const dashboardRoutes: Routes = [
       { path: 'home', component: HomeComponent},
       {
         path: 'admin', component: AdminComponent,
+        data: {role: 'Admin'},
+        canActivate: [RoleGuard]
+      },
+      {
+        path: 'solutions', component: SolutionsComponent,
         data: {role: 'Admin'},
         canActivate: [RoleGuard]
       }

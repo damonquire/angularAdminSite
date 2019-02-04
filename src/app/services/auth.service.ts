@@ -6,6 +6,7 @@ import decode from 'jwt-decode';
 import { forEach } from '@angular/router/src/utils/collection';
 import { AppModule } from '../app.module';
 import { stringify } from '@angular/core/src/render3/util';
+import { async } from '@angular/core/testing';
 
 @Injectable({
   providedIn: 'root'
@@ -38,7 +39,7 @@ export class AuthService {
 
   loginAdmin(): void {
     //this._router.navigateByUrl('../podio.com/oauth/authorize?client_id=angular-test&redirect_uri=http://localhost:4200');
-    window.location.href = 'https://www.podio.com/oauth/authorize?response_type=token&client_id=angular&redirect_uri=https://owaikpgv.github.stackblitz.io/dashboard/admin&state=Success';
+    window.location.href = 'https://www.podio.com/oauth/authorize?response_type=token&client_id=angular&redirect_uri=http://localhost:4200/dashboard/admin&state=DamonIsTheAngularMaster';
     //set as regular user regardless
     sessionStorage.setItem('token', `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1MzMyNzM5NjksImV4cCI6MTU2NDgxMDAwNSwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoiVGVzdCBHdWFyZCIsIkdpdmVuTmFtZSI6IkpvaG5ueSIsIlN1cm5hbWUiOiJSb2NrZXQiLCJFbWFpbCI6Impyb2NrZXRAZXhhbXBsZS5jb20iLCJyb2xlIjoiQWRtaW4ifQ.rEkg53_IeCLzGHlmaHTEO8KF5BNfl6NEJ8w-VEq2PkE`);
   
@@ -96,6 +97,8 @@ export class AuthService {
       {
         var json=JSON.parse(Http.response);
         document.getElementById("userName").innerHTML="<b>"+json.mail+"</b>";
+        if(!window.location.href.includes("user="))
+        window.location.href+="&user="+json.mail;
       }
       
     var Http2 = new XMLHttpRequest();
@@ -256,6 +259,7 @@ GetWorkspaces()
   }
   SaveSolution()
   {
+    document.getElementById("saveBtn").innerHTML="<i class=\"fa fa-refresh fa-spin\"></i>Saving";
     var solutionName=(<HTMLInputElement>document.getElementById("solutionName")).value;
     //is only grabbing one selection its seems... need work around
     var selectedWorkspaces=(<HTMLSelectElement>document.getElementById("selectW")).selectedOptions;
@@ -314,14 +318,29 @@ GetWorkspaces()
         var solutionDict=[];
         solutionDict.push(
         {
-        key:solutionName,
+        key:document.getElementById('typing').innerHTML,
         value:solutionText
         }        
       )
       
       console.log(JSON.stringify(solutionDict));
       }
-    
-    
+      changeBtn();
+      async function sleep(ms)
+      {
+        return new Promise(resolve => setTimeout(resolve, ms));
+      }
+      async function changeBtn()
+      {
+        await sleep(1000);
+        document.getElementById("saveBtn").innerHTML="Saved!";
+        
+      }
+      window.location.href = 'http://localhost:4200/dashboard/solutions'+window.location.hash;//figure this shizz out
+  }
+  GenerateID()
+  {
+      var inputBox = (<HTMLInputElement>document.getElementById("solutionName"));
+        document.getElementById('typing').innerHTML ="Sol-"+inputBox.value+"-SaaS";
   }
 }

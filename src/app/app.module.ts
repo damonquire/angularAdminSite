@@ -8,12 +8,14 @@ import { LoginComponent } from './login/login.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { APP_ROUTES } from './app.routes';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { SolutionsComponent } from './solutions/solutions.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    SolutionsComponent
   ],
   imports: [
     BrowserModule,

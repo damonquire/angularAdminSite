@@ -41,5 +41,9 @@ export class AdminComponent implements OnInit {
   {
     this._authService.SaveSolution();
   }
+  GenerateID()
+  {
+    this._authService.GenerateID();
+  }
 
 }
