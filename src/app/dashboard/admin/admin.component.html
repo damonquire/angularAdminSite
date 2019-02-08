@@ -5,8 +5,8 @@ It seems this is your first time here. Let's create a Solution!
 <br>
 <body id="admin">
 First, let's give this solution a name:
-<input id="solutionName" type="text"(keyup)="GenerateID()"(keydown)="GenerateID()">
-<b>  Solution ID:</b> <span id="typing"></span>
+<input id="solutionName" type="text"(keyup)="GenerateSolutionID()"(keydown)="GenerateSolutionID()">
+<b>  Solution ID: </b> <span id="typing"></span>
 <br><br>
 Next, select which Organization your solution will come from:     
 <select id="selectNumber">
@@ -23,50 +23,8 @@ Next, select which Organization your solution will come from:
               <button id="saveBtn" (click)="SaveSolution()" class="buttonload">Save Solution</button>
             </p>
           </body>
-        <!--
-      
-        <p id="form" style="display:none">
-        <b><span style="font-size: 20px">Make Podio Calls Here:</span></b><br><br>
-          <button (click)="GetUser()">Get User</button>
-         
-        <br>
-        <br>
-        <button (click)="GetApps()">Get All Apps</button>
-        
-        <br>
-        <br>
-        <button (click)="GetOrganizations()">Get All Orgs</button>
-      
-        <br>
-        <br>
-          <input id="itemIdBox" type="text"placeholder="Item ID...">
-        <button (click)="GetItem()">Get Item</button>
-      
-        <br>
-        <br>
-          <input id="appIdBox" type="text"placeholder="App ID...">
-        <button (click)="GetApp()">Get App</button>
-      
-      
-      </p>
-      <pre id="results"></pre>-->
       <head>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <style>
-        .buttonload {
-          background-color: #4CAF50; /* Green background */
-          border: none; /* Remove borders */
-          color: white; /* White text */
-          padding: 12px 24px; /* Some padding */
-          font-size: 16px; /* Set a font-size */
-        }
-        
-        /* Add a right margin to each icon */
-        .fa {
-          margin-left: -12px;
-          margin-right: 8px;
-        }
-        </style>
         </head>
       

@@ -1,49 +1,55 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service'
-
+import {OrganizationService} from '../../services/organization.service';
+import {AppService} from '../../services/app.service';
+import {UserService} from '../../services/user.service';
+import {SolutionService} from '../../services/solution.service';
+import {WorkspaceService} from '../../services/workspace.service';
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
-  styles: []
+  styleUrls: ['./admin.component.css']
 })
 export class AdminComponent implements OnInit {
 
-  constructor(private _authService: AuthService) { }
+  constructor(
+     private _authService: AuthService,
+     private _organizationService:OrganizationService,
+     private _appService:AppService,
+     private _userService:UserService,
+     private _solutionService:SolutionService,
+     private _workspaceService:WorkspaceService) { }
 
   ngOnInit() {
-    this._authService.checkIfCodeExists();
+    this._solutionService.GenerateSolutionForm();
   }
   GetUser()
   {
-    this._authService.GetUser();
-  }
-  GetItem()
-  {
-    this._authService.GetItem();
+    this._userService.GetUser();
   }
   GetApp()
   {
-    this._authService.GetApp();
+    this._appService.GetApp();
   }
   GetApps()
   {
-    this._authService.GetApps();
+    this._appService.GetApps();
   }
   GetOrganizations()
   {
-    this._authService.GetOrganizations();
+    this._organizationService.GetOrganizations();
   }
   GetWorkspaces()
   {
-    this._authService.GetWorkspaces();
+    this._workspaceService.GetWorkspaces();
   }
   SaveSolution()
   {
-    this._authService.SaveSolution();
+    this._solutionService.SaveSolution();
   }
-  GenerateID()
+  GenerateSolutionID()
   {
-    this._authService.GenerateID();
+    this._solutionService.GenerateSolutionID();
   }
 
 }

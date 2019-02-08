@@ -1,0 +1,16 @@
+
+#first {
+    width: 20%;
+    float: left;
+    height: 800px;
+        background-color: rgb(151, 151, 151);
+}
+#second {
+    width: 80%;
+    float: left;
+    height: 800px;
+    background-color: rgb(201, 201, 201);
+}
+#h1 {
+    text-align: center;
+}

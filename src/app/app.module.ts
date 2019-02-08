@@ -9,13 +9,15 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { APP_ROUTES } from './app.routes';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { SolutionsComponent } from './solutions/solutions.component';
+import { UserIconComponent } from './user-icon/user-icon.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     PageNotFoundComponent,
-    SolutionsComponent
+    SolutionsComponent,
+    UserIconComponent
   ],
   imports: [
     BrowserModule,

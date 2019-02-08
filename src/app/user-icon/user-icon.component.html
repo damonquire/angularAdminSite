@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div style="float:right" (load)="ngOnInit" class="dropdown">
+  <button style="display: none" class="dropbtn"id="userDrop"></button>
+  <div class="dropdown-content">
+    <a href="login"(click)="logout()">Logout</a>
+    <a>Account Settings</a>
+    <a href="dashboard/solutions">View Solutions</a>
+  </div>
+</div>
+
+</body>
+</html>
+
