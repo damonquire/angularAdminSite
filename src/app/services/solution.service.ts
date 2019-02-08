@@ -8,7 +8,7 @@ export class SolutionService {
   constructor() { }
   gotosolutions()
   {
-    window.location.href='http://localhost:4200/dashboard/solutions'+window.location.hash;
+    window.location.href='../dashboard/solutions'+window.location.hash;
   }
   SaveSolution()
   {
@@ -87,7 +87,7 @@ export class SolutionService {
       {
         await sleep(2000);
         document.getElementById("saveBtn").innerHTML="Saved!";
-        window.location.href = 'http://localhost:4200/dashboard/solutions'+window.location.hash;
+        window.location.href = '../dashboard/solutions'+window.location.hash;
       }
       //figure this shizz out
   }
